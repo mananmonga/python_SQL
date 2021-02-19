@@ -1,4 +1,8 @@
-# This repository contains solutions to the CS591 L1 assignments from Manan Monga
+# This repository contains a library with popular SQL operators implemented in Python to test efficiency and use of data provenance features, ML explainability libraries and also performance metric dashboards
+
+Topics
+Resources
+
 
 ## Pre-requisites for running queries:
 
@@ -7,29 +11,45 @@
 3. [Ray](https://ray.io)
 
 ## Input Data
+The task queries expect two space-delimited text files (similar to CSV files). 
 
-Queries of assignment 4 expect txt files with space separators'
+The first file (friends) must include records of the form:
 
-The query structure for the recommendation and backward tracing queries can be seen in the file tests.py
+|UID1 (int)|UID2 (int)|
+|----|----|
+|1   |2342|
+|231 |3   |
+|... |... |
 
-The code is istrumented for operators Scan, Select, Join, Groupby, OrderBy
-The top 2 time consuming operators for recommendation query are Join an GroupBy
+The second file (ratings) must include records of the form:
 
-The lineage methods for all of these operators is traced as well. 
-The top 2 most time consuming operators for backward tracing are Join and GroupBy again, although Select takes time as well.
+|UID (int)|MID (int)|RATING (int)|
+|---|---|------|
+|1  |10 |4     |
+|231|54 |2     |
+|...|...|...   |
+
+## Running queries 
+
+You can run queries as shown below: 
+
+```bash
+$ python engine.py --task [task_number] --friends [path_to_friends_file.txt] --ratings [path_to_ratings_file.txt] --uid [user_id] --mid [movie_id]
+```
+
+For example, the following command runs the 'likeness prediction' query of the first task for user id 1 and movie id 1:
+
+```bash
+$ python3 skeleton/engine.py task1 --friends 'data/friends.txt' --ratings 'data/movie_ratings.txt' --uid '1' --mid '1'
+```
+
+The 'recommendation' query of the second task does not require a movie id. Provide a limit instead.
+```bash
+$ python3 skeleton/assignment_12.py task2 --friends 'data/friends.txt' --ratings 'data/movie_ratings.txt' --uid '1' --limit '1'
+```
+$ python3 skeleton/engine.py task3 --friends 'data/friends.txt' --ratings 'data/movie_ratings.txt' --uid '1' --mid '1'
 
 
-To deploy my code on the MOC I had to take the following steps:
-1. Access the OpenStack Dashboard at https://kaizen.massopen.cloud/dashboard/project
-2. Go to Key Pairs tab under Compute and import public key of local machine
-3. Add SSH capabilities to the Security Group
-4. To launch a VM I went to Images under Compute, chose the OS I wanted and it launched a menu from which I set details, source and the flavor. Had to select Boot Source as Image and Create New Volume as No to get image from existing flavor
-5. Flavor to select the machine was set as m1.small
-6. Added the Key- Pair fom ones selected.
-7. Click on Launch Instance
-8. Switch to Instances Tab and assign a floating IP to the instance
-9. Have to make sure the pool is set to external, popup displays IP, I got 128.31.26.210
-10. ssh into this Master Instance 
-11. Create a key-pair
-12. Now using this node we can create more nodes in the cluster.
+## Running queries of Assignment 2
 
+TODO
